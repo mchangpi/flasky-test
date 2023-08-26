@@ -9,13 +9,16 @@ class Config:
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS', 'true').lower() in \
         ['true', 'on', '1']
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or os.environ.get('SENDGRID_API_KEY')
     FLASKY_MAIL_SUBJECT_PREFIX = '[Flasky]'
-    FLASKY_MAIL_SENDER = 'Flasky Admin <flasky@example.com>'
+    FLASKY_MAIL_SENDER = os.environ.get('FLASKY_ADMIN')
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FLASKY_POSTS_PER_PAGE = 20
     FLASKY_FOLLOWERS_PER_PAGE = 50
+
+    def __repr__(self):
+        return f"(FLASKY_ADMIN={self.FLASKY_ADMIN!r},\n MAIL_PASSWORD={self.MAIL_PASSWORD!r})"
 
     @staticmethod
     def init_app(app):
